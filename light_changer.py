@@ -1,16 +1,14 @@
 import requests
 import pyscreenshot as ImageGrab
-from colorthief import ColorThief
 
 
-def get_dominant_colour():
+def get_color():
     """ Screenshot a portion of the screen and return the rgb tuple of the most dominant color """
-    im = ImageGrab.grab(bbox=(0, 1060, 10, 1080), backend='mss', childprocess=False)
+    im = ImageGrab.grab(bbox=(0, 1079, 1, 1080), backend='mss', childprocess=False)
     im.save('screenshot.png')
-    color_thief = ColorThief('screenshot.png')
-    dominant_color = color_thief.get_color(quality=1)
+    color = im.getpixel((0, 0))
     
-    return dominant_color
+    return color
 
 
 def set_light_color(color):
@@ -34,7 +32,7 @@ def set_light_color(color):
 if __name__ == '__main__':
     while True:
         try:
-            color = get_dominant_colour()
+            color = get_color()
             set_light_color(color)
         except KeyboardInterrupt:
             set_light_color((255, 255, 255))
