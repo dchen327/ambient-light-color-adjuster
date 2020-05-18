@@ -23,6 +23,7 @@ def set_light_color(color):
 
     payload = {
         "color": rgb,
+        "duration": 0.5,
     }
 
     response = requests.put('https://api.lifx.com/v1/lights/all/state', data=payload, headers=headers)
