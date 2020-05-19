@@ -15,7 +15,7 @@ def set_light_color(color):
     """ Set lifx light color to provided rgb tuple """
     rgb = 'rgb:' + ','.join(map(str, color))  # convert (r, g, b) -> rgb:r,g,b
 
-    token = ""
+    token = "API TOKEN HERE"
 
     headers = {
         "Authorization": "Bearer %s" % token,
@@ -23,7 +23,8 @@ def set_light_color(color):
 
     payload = {
         "color": rgb,
-        "duration": 0.5,
+        "duration": 0.3,
+        "brightness": 1.0,
     }
 
     response = requests.put('https://api.lifx.com/v1/lights/all/state', data=payload, headers=headers)
