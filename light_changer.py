@@ -56,10 +56,13 @@ def set_light_color(color):
 
 
 if __name__ == '__main__':
+    prev_color = (0, 0, 0)
     while True:
         try:
             color = get_color(SCREENSHOT_REGION, colorthief=USE_COLORTHIEF)
-            set_light_color(color)
+            if color != prev_color:
+                set_light_color(color)
+                prev_color = color
         except KeyboardInterrupt:
             set_light_color((255, 255, 255))  # reset light to max brightness after stopping program
             break
