@@ -22,7 +22,7 @@ def get_color(region, colorthief=True):
         from colorthief import ColorThief
         im.save('screenshot.png')
         color_thief = ColorThief('screenshot.png')
-        color = color_thief.get_color(quality=1)
+        color = color_thief.get_color(quality=1)  # dominant color
 
     else:
         color = im.getpixel((0, 0))  # return color of top left pixel of region
@@ -32,6 +32,9 @@ def get_color(region, colorthief=True):
 
 def set_light_color(color):
     """ Set lifx light color to provided rgb tuple """
+    if sum(color) <= 30:  # color is very dark, basically black
+        color = (0, 0, 100)  # set color to blue since this is the closest to darkness
+
     rgb = 'rgb:' + ','.join(map(str, color))  # convert (r, g, b) -> rgb:r,g,b
 
     token = "API TOKEN HERE"
@@ -40,6 +43,8 @@ def set_light_color(color):
         "Authorization": "Bearer %s" % token,
     }
 
+    # brightness can be set to any value from 0.0 to 1.0, or the line can be removed
+    # not always setting max brightness gives greater color accuracy; however, some colors can be pretty dim
     payload = {
         "color": rgb,
         "duration": 0.4,
@@ -54,10 +59,7 @@ if __name__ == '__main__':
     while True:
         try:
             color = get_color(SCREENSHOT_REGION, colorthief=USE_COLORTHIEF)
-            print(color)
             set_light_color(color)
         except KeyboardInterrupt:
             set_light_color((255, 255, 255))  # reset light to max brightness after stopping program
             break
-
-
